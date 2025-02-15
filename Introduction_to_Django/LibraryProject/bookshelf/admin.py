@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import Book # Customizing the Admin Interface
+from .models import Book # Customizing the Admin Interface
 
 class BookAdmin(admin.ModelAdmin):
     # Display the book's field in list form
