@@ -25,7 +25,7 @@ def register(request):
             form = UserCreationForm()
         return render(request, 'relationship_app/register.html', {'form':form})
     
-def login_view(request):
+def LoginView(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -36,7 +36,7 @@ def login_view(request):
             form = AuthenticationForm()
         return render(request, 'relationship_app/login.html', {'form':form})
     
-def logout_view(request):
+def LogoutView(request):
     if request.method == 'POST':
         logout(request)
         return redirect('logout')
