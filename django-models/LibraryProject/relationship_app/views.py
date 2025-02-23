@@ -5,6 +5,7 @@ from .models import Library
 from django.contrib.auth import login, logout, authenticate
 # register
 from . import views
+
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
@@ -28,10 +29,10 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
     
-def RegisterView(CreateView):
+class SignUpView(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('login') 
-    template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('login')
+    template_name = 'registration/register.html'
     path('register/', views.register, name='register'),
       
 urlpatterns = [
