@@ -12,7 +12,6 @@ library = Library.objects.get(name=library_name)
 books_in_library = library.books.all()
 print("Books in", library_name, ":", books_in_library)
 
-# Retrieve the librarian for a library
-library = Library.objects.get(library=library_name)
-librarian = library.librarian_set.first()
-print("Librarian for", library_name, ":", librarian.name)
+# # Retrieve the librarian for a library without using Librarian.objects.get(library=)
+librarian_name = Librarian.objects.filter(library__name=library_name).values_list('name', flat=True).first()
+print("Librarian for", library_name, ":", librarian_name)
