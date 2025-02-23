@@ -4,6 +4,7 @@ from django.views.generic.detail import DetailView
 from .models import Library
 from django.contrib.auth import login, logout, authenticate
 # register
+from . import views
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
@@ -31,11 +32,11 @@ def RegisterView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login') 
     template_name = 'relationship_app/register.html'
+    path('register/', views.register, name='register'),
       
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
 ]
 
 urlpatterns += [  # Append logout URL to existing urlpatterns
-    path('logout/', LogoutView.as_view(), name='logout'),
-]
+path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),]
