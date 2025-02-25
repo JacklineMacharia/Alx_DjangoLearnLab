@@ -1,3 +1,4 @@
+from django.urls import path
 from django.shortcuts import render, redirect
 from .models import Book
 from django.views.generic.detail import DetailView
