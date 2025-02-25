@@ -3,7 +3,10 @@ from django.shortcuts import render, redirect
 from .models import Book
 from django.views.generic.detail import DetailView
 from .models import Library
+
+
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # register
 from . import views
 
@@ -30,15 +33,28 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
     
-class SignUpView(CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/register.html'
-    path('register/', views.register, name='register'),
-      
-urlpatterns = [
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-]
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            form = UserCreationForm()
+        return render(request, 'register.html', {'form': form})
 
-urlpatterns += [  # Append logout URL to existing urlpatterns
-path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),]
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+        else:
+            form = AuthenticationForm()
+        return render(request, 'login.html', {'form': form})
+      
+def logout_view(request):
+    logout(request)
+    return redirect('login')
