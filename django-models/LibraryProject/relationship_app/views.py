@@ -39,10 +39,10 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('login')
         else:
             form = UserCreationForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'relationship_app/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
