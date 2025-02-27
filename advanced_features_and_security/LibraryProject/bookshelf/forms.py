@@ -14,3 +14,8 @@ class CustomUserForm(forms.ModelForm):
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("Email already exists.")
         return email
+
+class ExampleForm(forms.Form):
+    name = forms.CharField(max_length=100, required=True, help_text="Enter your full name")
+    email = forms.EmailField(required=True, help_text="Enter a valid email address")
+    message = forms.CharField(widget=forms.Textarea, required=True, help_text="Enter your message")
