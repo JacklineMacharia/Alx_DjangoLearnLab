@@ -32,7 +32,7 @@ class CustomUserAdmin(UserAdmin):
     
 
 
-admin.site.register(Book, CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 
 
 
