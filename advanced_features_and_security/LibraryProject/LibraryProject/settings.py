@@ -45,6 +45,11 @@ CSRF_COOKIE_SECURE = True # Ensures CSRF cookies are sent over HTTPS
 SESSION_COOKIE_SECURE = True # Ensures session cookies are sent over HTTPS
 SECURE_SSL_REDIRECT = True # Redirect HTTP to HTTPS
 
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow browser preload of HSTS policy
+
 #Content Security Policy
 CSP_DEFAULT_SRC = ("'self'",) # Restrict default content sources
 CSP_SCRIPT_SCR = ("'self'", "trusted-scripts.com")
