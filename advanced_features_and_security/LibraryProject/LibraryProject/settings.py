@@ -36,7 +36,7 @@ DEBUG = False # Disable debug mode in production
 
 ALLOWED_HOSTS = []
 
-SECURE_BROWSER_XSS_FILTTER = True #Prevent XSS attacks
+SECURE_BROWSER_XSS_FILTER = True #Prevent XSS attacks
 X_FRAME_OPTIONS = 'DENY' #Prevent clickjacking
 SECURE_CONTENT_TYPE_NOSNIFF = True # Prevent MIME-type sniffing
 
