@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
+from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +23,38 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-e_w^vy(x9-6-ftawc)w=c=4et7^(sniz++b!+8-#!=&@i^xu(h'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+def get_env_variable(var_name):
+    """ Get the environment variable or return exceprtion """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        raise ImproperlyConfigured(f"Set the {var_name} environment variable")
+    
+# Security Settings
+DEBUG = False # Disable debug mode in production
+
 
 ALLOWED_HOSTS = []
+
+SECURE_BROWSER_XSS_FILTTER = True #Prevent XSS attacks
+X_FRAME_OPTIONS = 'DENY' #Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True # Prevent MIME-type sniffing
+
+# Enforce HTTPS (only enable if using HTTPS)
+CSRF_COOKIE_SECURE = True # Ensures CSRF cookies are sent over HTTPS
+SESSION_COOKIE_SECURE = True # Ensures session cookies are sent over HTTPS
+SECURE_SSL_REDIRECT = True # Redirect HTTP to HTTPS
+
+#Content Security Policy
+CSP_DEFAULT_SRC = ("'self'",) # Restrict default content sources
+CSP_SCRIPT_SCR = ("'self'", "trusted-scripts.com")
+CSP_STYLE_REDIRECT = ("'self'", "trusted-style.com")
+
+# Prevent Host Header Injection
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO' 'https')
+
+# Secret Key Management
+SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY') # Store secret key in environment variable
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
@@ -126,4 +155,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+
 

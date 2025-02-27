@@ -32,4 +32,11 @@ def book_delete(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     book.delete()
     return redirect(book_list)
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    books = Book.object.filter(title__icontains=query)
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
         
