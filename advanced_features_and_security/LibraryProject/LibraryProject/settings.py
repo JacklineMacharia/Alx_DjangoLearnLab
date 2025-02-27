@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +80,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',  # Add CSP Middleware
 ]
 
+# Content Security Policy (CSP)
+CSP_DEFAULT_SRC = ("'self'",)  # Restrict default sources
+CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.com")  # Allow safe script sources
+CSP_STYLE_SRC = ("'self'", "https://trusted-styles.com")  # Allow safe style sources
+CSP_IMG_SRC = ("'self'", "https://trusted-images.com")  # Allow images from trusted sources
 ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [
