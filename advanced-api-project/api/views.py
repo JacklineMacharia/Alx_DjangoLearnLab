@@ -17,13 +17,13 @@ class BookListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Unauthenticated users can read only
     
 # Retrieving a single book by id
-class BookDetailview(generics.RetrieveAPIView):
+class Detailview(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
 
 # Add a new book    
-class BookCreateView(generics.CreateAPIView):
+class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated] # Only authenticated can create
@@ -39,13 +39,13 @@ class BookCreateView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 # Modify an existing book
-class BookUpdateView(generics.UpdateAPIView):
+class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
     
 # Delete a book
-class BookDeleteView(generics.DestroyAPIView):
+class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes =  [permissions.IsAuthenticated]
