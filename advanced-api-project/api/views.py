@@ -17,7 +17,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly] # Unauthenticated users can read only
     
 # Retrieving a single book by id
-class Detailview(generics.RetrieveAPIView):
+class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
