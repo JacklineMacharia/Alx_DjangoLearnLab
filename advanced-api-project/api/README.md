@@ -27,3 +27,13 @@ Perform text search on title and author name:
 Sort books by:
 - Title (ascending): `/api/books/?ordering=title`
 - Publication Year (descending): `/api/books/?ordering=-publication_year`
+
+
+## Running Unit Tests
+
+To ensure the API functions correctly, we have implemented automated tests using Django's `unittest` module.
+
+### Running Tests
+Activate your virtual environment:
+```bash
+venv\Scripts\activate     # On Windows
