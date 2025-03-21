@@ -104,15 +104,15 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.author
 
 class SearchResultsView(ListView):
-    model = post
+    model = Post
     template_name = 'blog/search_results.html'
-    cntext_object_name = 'posts'
+    context_object_name = 'posts'
 
-    def def get_queryset(self):
+    def get_queryset(self):
         query = self.request.GET.get('q')
         return Post.objects.filter(
-            Q(title_icontains=query) |
-            Q(content_icontains=query) |
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
             Q(tags__name__icontains=query)
         ).distinct()
     
