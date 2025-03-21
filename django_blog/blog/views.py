@@ -155,7 +155,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return reverse_lazy('post-detail', kwargs={'pk': self.object.post.id})
 
 
-class TaggedPostsView(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = 'blog/tagged_posts.html'
     context_object_name = 'posts'
