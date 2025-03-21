@@ -1,6 +1,13 @@
 {% extends "blog/base.html" %}
 {% block content %}
     <h2>All Blog Posts</h2>
+
+    <!-- Search Form - Placed at the Top -->
+    <form method="GET" action="{% url 'search-results' %}">
+        <input type="text" name="q" placeholder="Search posts..." required>
+        <button type="submit">Search</button>
+    </form>
+
     {% for post in posts %}
         <div>
             <h3><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h3>
@@ -8,5 +15,6 @@
             <p>By {{ post.author }} on {{ post.created_at }}</p>
         </div>
     {% endfor %}
+    
     <a href="{% url 'post-create' %}">Create New Post</a>
 {% endblock %}

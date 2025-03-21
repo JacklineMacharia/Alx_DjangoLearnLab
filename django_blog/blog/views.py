@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django import forms
+from django.db.models import Q
+from taggit.models import Tag
 
 # Create your views here.
 class RegisterForm(UserCreationForm):
@@ -100,6 +102,20 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+
+class SearchResultsView(ListView):
+    model = post
+    template_name = 'blog/search_results.html'
+    cntext_object_name = 'posts'
+
+    def def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Post.objects.filter(
+            Q(title_icontains=query) |
+            Q(content_icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    
     
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
@@ -137,3 +153,12 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('post-detail', kwargs={'pk': self.object.post.id})
+
+
+class TaggedPostsView(ListView):
+    model = Post
+    template_name = 'blog/tagged_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs['tag_slug'])
