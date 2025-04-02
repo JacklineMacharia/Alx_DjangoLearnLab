@@ -16,9 +16,10 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
         
 class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
+        
     def get_queryset(self):
         return Comment.objects.filter(post=self.kwargs(post=self.kwargs["post_id"]).order_by("-created_at"))
     
