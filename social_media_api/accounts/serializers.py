@@ -4,23 +4,18 @@ from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, Style={"input_type": "password"})
+    
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
+        fields = ["username", "email", "password"]
         
-    class RegisterSerializer(serializers.ModelSerializer):
-        password = serializers.CharField(write_only=True)
-        
-        class Meta:
-            model = User
-            fields = ['username', 'emails', 'password']
-            
-            def create(self, validated_data):
-                user = User.objects.create_user(
-                    username=validated_data['username'],
-                    email=validated_data['email'],
-                    password=validated_data['password']
-                )
-                Token.objects.create(user=user)
-                return user
+    def create(self, validated_data):
+        user = get_user_model().objects.create_user(**validated_data)
+        Token.objects.create(user=user)
+        return user
+    
+class UserLoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
