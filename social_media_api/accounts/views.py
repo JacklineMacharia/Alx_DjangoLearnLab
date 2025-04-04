@@ -10,17 +10,17 @@ from rest_framework import permissions
 
 from .serializers import RegisterSerializer, UserSerializer
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
     
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        user = User.objects.get(username=response.data['username'])
+        user = CustomUser.objects.get(username=response.data['username'])
         token, _ = Token.objects.get_or_create(user=user)
         return response({'token': token.key, 'user': response.data}, status=status.HTTP_201_CREATED)
 
@@ -47,8 +47,8 @@ class FollowUserView(APIView):
         """
         
         try:
-            user_to_follow = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+            user_to_follow = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
         if request.user == user_to_follow:
@@ -64,8 +64,8 @@ class UnfollowUserView(APIView):
         Allows an authenticated user to unfollow another user
         """
         try:
-              user_to_unfollow = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+              user_to_unfollow = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
         if request.user == user_to_unfollow:
@@ -80,14 +80,14 @@ class ListFollowersView(generics.RetrieveAPIView):
     Get the list of followers for a user
     
     """
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     lookup_field = "id"
     
     def get(self, request, user_id):
         try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         followers = user.folowers.all()
         return Response({"followers": [follower.username for follower in followers]}, status=status.HTTP_200_OK)
@@ -98,15 +98,15 @@ class ListFollowingView(generics.RetrieveAPIView):
     Get the list of users a user is following
     
     """
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
     lookup_field = "id"
     
     def get(self, request, user_id):
         try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         following = user.following.all()
         return Response({"following": [followed.username for followed in following]}, status=status.HTTP_200_OK)
