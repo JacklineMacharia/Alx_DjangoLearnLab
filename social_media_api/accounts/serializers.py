@@ -16,6 +16,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         Token.objects.create(user=user)
         return user
     
+class UserSerializer(serializers.ModelSerializer):
+    followers_count = serializers.IntegerField(source="followers.count", read_only=True)
+    following_count = serializers.IntegerField(source="following.count", read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ["id", "username", "followers", "followers_count", "following_count"]
+    
 class UserLoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
